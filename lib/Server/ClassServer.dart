@@ -9,17 +9,21 @@ import 'package:quizapp/main.dart';
 
 class ServerApi {
   static requestToken({String? Token}) async {
-    http.Response response = await http.get(
-      Uri.parse(urlApi + "Token"),
-      headers: {
-        'Authorization': 'Bearer $Token',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-    );
-    var jsonResponse =
-        await convert.jsonDecode(response.body) as Map<String, dynamic>;
+    try {
+      http.Response response = await http.get(
+        Uri.parse(urlApi + "Token"),
+        headers: {
+          'Authorization': 'Bearer $Token',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+      );
+      var jsonResponse =
+          await convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-    return jsonResponse["success"];
+      return jsonResponse["success"];
+    } catch (error) {
+      print(error);
+    }
   }
 
   //!------------------------------------
@@ -28,50 +32,58 @@ class ServerApi {
       {required endPoint,
       required Map<String, String> data,
       String? Token}) async {
-    http.Response response = await http.post(Uri.parse(urlApi + endPoint),
-        headers: {
-          'Authorization': Token != null ? 'Bearer $Token' : '',
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: data);
-    var jsonResponse =
-        await convert.jsonDecode(response.body) as Map<String, dynamic>;
-    if (jsonResponse["success"] == true) {
-      return jsonResponse;
-    } else {
-      Get.snackbar(
-          "Wrong", 'Request failed with status: ${response.statusCode}.',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2));
+    try {
+      http.Response response = await http.post(Uri.parse(urlApi + endPoint),
+          headers: {
+            'Authorization': Token != null ? 'Bearer $Token' : '',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: data);
+      var jsonResponse =
+          await convert.jsonDecode(response.body) as Map<String, dynamic>;
+      if (jsonResponse["success"] == true) {
+        return jsonResponse;
+      } else {
+        Get.snackbar(
+            "Wrong", 'Request failed with status: ${response.statusCode}.',
+            snackPosition: SnackPosition.BOTTOM,
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2));
+      }
+    } catch (error) {
+      print(error);
     }
   }
 
   //!------------------------------------
 
   static getData({required endPoint}) async {
-    String? token = await storage!.read(key: "token");
+    try {
+      String? token = await storage!.read(key: "token");
 
-    http.Response response = await http.get(
-      Uri.parse(urlApi + endPoint),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-    );
+      http.Response response = await http.get(
+        Uri.parse(urlApi + endPoint),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+      );
 
-    if (response.statusCode == 200) {
-      var jsonResponse = await convert.jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        var jsonResponse = await convert.jsonDecode(response.body);
 
-      return jsonResponse;
-    } else {
-      Get.snackbar(
-          "Wrong", 'Request failed with status: ${response.statusCode}.',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2));
+        return jsonResponse;
+      } else {
+        Get.snackbar(
+            "Wrong", 'Request failed with status: ${response.statusCode}.',
+            snackPosition: SnackPosition.BOTTOM,
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2));
+      }
+    } catch (error) {
+      print(error);
     }
   }
 }

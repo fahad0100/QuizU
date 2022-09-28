@@ -29,9 +29,13 @@ class LeaderboardController extends GetxController {
   }
 
   getInfoUser() async {
-    var getInfo = await ServerApi.getData(endPoint: "UserInfo");
+    try {
+      var getInfo = await ServerApi.getData(endPoint: "UserInfo");
 
-    userInfo = UserModel.fromJson(getInfo);
-    update();
+      userInfo = UserModel.fromJson(getInfo);
+      update();
+    } catch (error) {
+      print(error);
+    }
   }
 }

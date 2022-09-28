@@ -6,16 +6,20 @@ import 'package:quizapp/main.dart';
 
 class NewUserController extends GetxController {
   setName({String nameUser = "Okoul"}) async {
-    loadingWidgets(title: "Wait Please ...");
-    Map<String, dynamic> response = await ServerApi.postData(
-        endPoint: "Name",
-        Token: await storage!.read(key: "token"),
-        data: {"name": nameUser});
-    if (response["success"] == true) {
-      Get.close(0);
-      Get.offAll(() =>  StartScreen());
-    } else {
-      Get.close(0);
+    try {
+      loadingWidgets(title: "Wait Please ...");
+      Map<String, dynamic> response = await ServerApi.postData(
+          endPoint: "Name",
+          Token: await storage!.read(key: "token"),
+          data: {"name": nameUser});
+      if (response["success"] == true) {
+        Get.close(0);
+        Get.offAll(() => StartScreen());
+      } else {
+        Get.close(0);
+      }
+    } catch (error) {
+      print(error);
     }
   }
 

@@ -10,8 +10,13 @@ late bool _Login;
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   storage = const FlutterSecureStorage();
-  _Login =
-      await ServerApi.requestToken(Token: await storage!.read(key: "token"));
+
+  try {
+    _Login =
+        await ServerApi.requestToken(Token: await storage!.read(key: "token"));
+  } catch (error) {
+    print(error);
+  }
   runApp(const MyApp());
 }
 
@@ -21,6 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: CustomTheme.lightTheme,
       home: _Login == true ? StartScreen() : LoginScreen(),
     );

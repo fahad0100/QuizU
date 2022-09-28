@@ -29,21 +29,25 @@ class QuizController extends GetxController {
     restAll();
     List dataQuestion = await ServerApi.getData(endPoint: "Questions");
 
-    for (var question in dataQuestion) {
-      AllQuestions.add(QuestionsModel.fromJson(question));
-    }
-
-    timer = Timer.periodic(Duration(seconds: 1), (timer) async {
-      timerTime++;
-
-      if (timerTime == 120) {
-        timer.cancel();
-        await sendScore();
-        showMessageQuiz(Title: "Time is End", score: score.toString());
+    try {
+      for (var question in dataQuestion) {
+        AllQuestions.add(QuestionsModel.fromJson(question));
       }
+
+      timer = Timer.periodic(Duration(seconds: 1), (timer) async {
+        timerTime++;
+
+        if (timerTime == 120) {
+          timer.cancel();
+          await sendScore();
+          showMessageQuiz(Title: "Time is End", score: score.toString());
+        }
+        update();
+      });
       update();
-    });
-    update();
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -55,11 +59,15 @@ class QuizController extends GetxController {
   }
 
   sendScore() async {
-    var token = await storage?.read(key: "token");
-    await storage!.write(key: "score", value: score.toString());
-    await ServerApi.postData(
-        endPoint: "Score", Token: token, data: {"score": score.toString()});
-    await showMessageQuiz(Title: "Successfully", score: score.toString());
+    try {
+      var token = await storage?.read(key: "token");
+      await storage!.write(key: "score", value: score.toString());
+      await ServerApi.postData(
+          endPoint: "Score", Token: token, data: {"score": score.toString()});
+      await showMessageQuiz(Title: "Successfully", score: score.toString());
+    } catch (error) {
+      print(error);
+    }
   }
 
   restAll() {
