@@ -14,8 +14,8 @@ A simple application to solve 30 questions in a two minutes
 
 
 ## Getting Started
-The app is linked in a special api at [Okoul](https://www.okoul.com/ )
-To try the app , you must create an account with your mobile number when downloading it , and then you can take the quiz
+The app is use a special api from [Okoul](https://www.okoul.com/ )
+To try the app , you must create an account with your mobile number when download it , and then you can take the quiz
 
 
 ![alt text](https://i.postimg.cc/cLzHJrjZ/Group-1.png)
