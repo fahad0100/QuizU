@@ -7,6 +7,12 @@ Application created by Flutter framework
 A simple application to solve 30 questions in a two minutes
 
 
+## Diagrame for App
+
+![Diagram (1)](https://user-images.githubusercontent.com/41303127/192812241-b8250992-6e1a-4fda-a692-87665431f746.png)
+
+
+
 ## Getting Started
 The app is linked in a special api at [Okoul](https://www.okoul.com/ )
 To try the app , you must create an account with your mobile number when downloading it , and then you can take the quiz
